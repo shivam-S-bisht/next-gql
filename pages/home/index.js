@@ -21,7 +21,7 @@ function Home() {
     const dynamicRouteId = useRef()
 
     useEffect(function () {
-        console.log("wefionwefoinwrgoinwrgoinwroignwroign")
+        console.log("wefionwefoinwrgoinwrgoinwroignwroignfew")
     }, [])
 
     async function handleOnClick(){
