@@ -1,6 +1,8 @@
-import { useLazyQuery, gql } from "@apollo/client"
+import { gql } from "@apollo/client"
+import Link from "next/link"
 import client from "../../apollo-client"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
+import { useRouter } from "next/router"
 // import { GET_ALL_USERS_AND_TODOS } from "../../gql/queries/get-all-users-and-todos"
 
 function Home() {
@@ -13,24 +15,39 @@ function Home() {
           emoji
         }
       }`
-    // const [getCountries, { loading, data }] = useLazyQuery(GET_COUNTIRIES)
-    const [countries, setCountries] = useState([])
 
-    const handleOnClick = async () => {
+    const [countries, setCountries] = useState([])
+    const router = useRouter()
+    const dynamicRouteId = useRef()
+
+    useEffect(function () {
+        console.log("wefionwefoinwrgoinwrgoinwroignwroign")
+    }, [])
+
+    async function handleOnClick(){
         client.query({
             query: GET_COUNTIRIES
         }).then(res=>{
-            console.log(res)
             setCountries(res.data.countries)
         })
+    }
+
+    function handleSubmitForm (e) {
+        e.preventDefault()
+        router.push(`dynamic/${dynamicRouteId.current.value}`)
+        dynamicRouteId.current.value = ""
     }
 
     return (
         <>
             <button onClick={handleOnClick} style={{display: "block"}}>Fetch Countries</button>
+            <button style={{display: "block"}}><Link href="/image">Image</Link></button>
+            <form onSubmit={handleSubmitForm}>
+                <input type="text" ref={dynamicRouteId} placeholder="Enter an id" />
+                <input type="submit" value="Submit" />
+            </form>
             {
                 countries?.map((country, idx) => {
-                    console.log(country)
                     return (
                         <div key={idx} style={{border: "1px solid red", display: "inline-block", margin: 10}}>
                             <p style={{display: "inline-block", margin: "0px 10px"}}>{country.code}</p>
